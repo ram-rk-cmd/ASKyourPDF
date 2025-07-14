@@ -2,7 +2,7 @@
 prokect structure 
 
 ollama_pdf_rag/
-├── src/                      # Source code
+├── src/                      # Source code 
 │   ├── app/                  # Streamlit application
 │   │   ├── components/       # UI components
 │   │   │   ├── chat.py      # Chat interface
