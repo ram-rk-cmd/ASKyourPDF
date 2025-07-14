@@ -228,14 +228,14 @@ def main() -> None:
     """
     Main function to run the Streamlit application.
     """
-    st.subheader("🧠 Ollama PDF RAG playground", divider="gray", anchor=False)
+    st.subheader(":book: Ask your PDF", divider="gray", anchor=False)
 
     # Get available models
     models_info = ollama.list()
     available_models = extract_model_names(models_info)
 
     # Create layout
-    col1, col2 = st.columns([1.5, 2])
+    col2, col1 = st.columns([3.5, 1.5], gap="large")
 
     # Initialize session state
     if "messages" not in st.session_state:
@@ -255,7 +255,7 @@ def main() -> None:
 
     # Add checkbox for sample PDF
     use_sample = col1.toggle(
-        "Use sample PDF (Scammer Agent Paper)", 
+        "Use sample PDF (Machine_learning)", 
         key="sample_checkbox"
     )
     
@@ -269,7 +269,7 @@ def main() -> None:
 
     if use_sample:
         # Use the sample PDF
-        sample_path = "data/pdfs/sample/scammer-agent.pdf"
+        sample_path = "data/pdfs/sample/Machine_learning.pdf"
         if os.path.exists(sample_path):
             if st.session_state["vector_db"] is None:
                 with st.spinner("Processing sample PDF..."):
@@ -306,24 +306,12 @@ def main() -> None:
                     # Extract and store PDF pages
                     with pdfplumber.open(file_upload) as pdf:
                         st.session_state["pdf_pages"] = [page.to_image().original for page in pdf.pages]
+    
+    # chat responce after pdf load
+    if st.session_state["vector_db"] is not None:
+        st.success("PDF loaded successfully! You can now ask questions about its content.")
 
-    # Display PDF if pages are available
-    if "pdf_pages" in st.session_state and st.session_state["pdf_pages"]:
-        # PDF display controls
-        zoom_level = col1.slider(
-            "Zoom Level", 
-            min_value=100, 
-            max_value=1000, 
-            value=700, 
-            step=50,
-            key="zoom_slider"
-        )
-
-        # Display PDF pages
-        with col1:
-            with st.container(height=410, border=True):
-                for page_image in st.session_state["pdf_pages"]:
-                    st.image(page_image, width=zoom_level)
+    
 
     # Delete collection button
     delete_collection = col1.button(
@@ -337,11 +325,11 @@ def main() -> None:
 
     # Chat interface
     with col2:
-        message_container = st.container(height=500, border=True)
+        message_container = st.container(height=375,  border=True )  
 
         # Display chat history
         for i, message in enumerate(st.session_state["messages"]):
-            avatar = "🤖" if message["role"] == "assistant" else "😎"
+            avatar = "🤖" if message["role"] == "assistant" else " 👤"
             with message_container.chat_message(message["role"], avatar=avatar):
                 st.markdown(message["content"])
 
@@ -350,7 +338,7 @@ def main() -> None:
             try:
                 # Add user message to chat
                 st.session_state["messages"].append({"role": "user", "content": prompt})
-                with message_container.chat_message("user", avatar="😎"):
+                with message_container.chat_message("user", avatar="👤"):
                     st.markdown(prompt)
 
                 # Process and display assistant response
