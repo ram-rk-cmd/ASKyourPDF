@@ -1,8 +1,5 @@
-# askyourpdf
-prokect structure 
-
 ollama_pdf_rag/
-├── src/                      # Source code 
+├── src/                      # Source code
 │   ├── app/                  # Streamlit application
 │   │   ├── components/       # UI components
 │   │   │   ├── chat.py      # Chat interface
@@ -18,5 +15,8 @@ ollama_pdf_rag/
 │   ├── pdfs/                # PDF storage
 │   │   └── sample/          # Sample PDFs
 │   └── vectors/             # Vector DB storage
+├── notebooks/               # Jupyter notebooks
+│   └── experiments/         # Experimental notebooks
 ├── tests/                   # Unit tests
+├── docs/                    # Documentation
 └── run.py                   # Application runner
